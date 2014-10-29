@@ -9,5 +9,5 @@ import Notifier
 def action():
     print "world"
 if __name__ == '__main__':
-    notifier =  Notifier.Notifier("derp")
+    notifier =  Notifier.Notifier()
     notifier.mainLoop()
