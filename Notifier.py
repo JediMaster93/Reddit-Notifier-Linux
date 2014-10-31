@@ -26,18 +26,18 @@ class Notifier(object):
            parser = Parser.Parser(r'http://www.reddit.com/r/gamedeals')
            self.data  = parser.getList()
            
-    def openBroswerUrl(self,notification, url):
+    def handleClick(self,notification, url):
         webbrowser.open(url)
         notification.close()
         gtk.main_quit()
-
+        self.seenList.append(url)
         
     def mainLoop(self):
         while True:
             self.getLatestData()
             threadToDisplay = None
             for thread in self.data:
-                if thread not in self.seenList:
+                if thread["url"] not in self.seenList:
                     #reddit gives us threads sorted by score
                     #just display the first one that was not seen
                     threadToDisplay = thread
@@ -45,7 +45,7 @@ class Notifier(object):
             notification = Notification(threadToDisplay["title"])
             url = threadToDisplay["url"]
             
-            notification.addAction(url, "Go To Thread", self.openBroswerUrl)
+            notification.addAction(url, "Go To Thread", self.handleClick)
             notification.show()
             sleep(3)
             print "Going thru loop"

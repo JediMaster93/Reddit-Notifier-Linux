@@ -7,6 +7,7 @@ Created on Oct 29, 2014
 
 import Notifier, gtk
 import pynotify
+import requests
 #action(Notification passed, arugement)
 #add_action("arugemnt", "Button text", Method)
 
