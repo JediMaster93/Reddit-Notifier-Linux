@@ -5,6 +5,7 @@ Created on Oct 29, 2014
 '''
 import urllib2, requests
 import json
+from time import sleep
 class Parser(object):
     '''
     classdocs
@@ -15,7 +16,15 @@ class Parser(object):
     def __init__(self, url):
         #url that sorts contains data per day.
         self.url = url + r'/top/.json?limit=100&sort=today'
-        request = requests.get(self.url)
+        
+        resultCode = 0
+        while resultCode != 200:
+            request = requests.get(self.url)
+            resultCode = request.status_code
+            print resultCode
+            sleep(1)
+            
+        
         self.json =  request.text
         self.json = json.loads(self.json)
 

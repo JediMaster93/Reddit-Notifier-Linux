@@ -6,21 +6,40 @@ Wrapper for notifications, linux version.
 Encapsulated in case i want Windows port
 
 '''
-import pynotify, gtk,webbrowser
+import pynotify, gtk, webbrowser
+import thread
+import time
+import threading
+
 class Notification(object):
     
 
     
     def __init__(self, text = "Default text"):
+     
         pynotify.init("App name")
         self.__text = text
         self.pyNotifiaction = pynotify.Notification(self.__text)
+        #self.pyNotifiaction.set_timeout(0)
+        #self.pyNotifiaction.set_timeout(pynotify.EXPIRES_DEFAULT)
+        self.pyNotifiaction.connect("closed", self.onClosed)
+        self.pyNotifiaction.set_timeout(1)
+        
+        #create a thread that kills notification.
+    def onClosed(self, notification):
+        gtk.main_quit()
         
     def show(self):
         self.pyNotifiaction.show()
         gtk.main()
+    def selfDestruct(self, notification, none):
+        print notification
+        print "in self destrucst"
+        notification.close()
+        print "closed notifiaction"
         
-    def close1(self):
+        
+    def close(self):
         print "close"
         self.pyNotifiaction.close()
     def setText(self, text):
@@ -32,4 +51,7 @@ class Notification(object):
         
     def getPyNotification(self):
         return self.pyNotifiaction
+    
+    
+    
         
