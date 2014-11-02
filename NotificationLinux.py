@@ -6,10 +6,8 @@ Wrapper for notifications, linux version.
 Encapsulated in case i want Windows port
 
 '''
-import pynotify, gtk, webbrowser
-import thread
-import time
-import threading
+import pynotify, gtk
+
 
 class Notification(object):
     
@@ -17,7 +15,7 @@ class Notification(object):
     
     def __init__(self, text = "Default text"):
      
-        pynotify.init("App name")
+        pynotify.init("Reddit Notify")
         self.__text = text
         self.pyNotifiaction = pynotify.Notification(self.__text)
         #self.pyNotifiaction.set_timeout(0)

@@ -11,9 +11,8 @@ import webbrowser
 
 from NotificationLinux import *
 import  Parser
-import gobject
-
-
+import pickle
+import os
 class Notifier(object):
     '''
     classdocs
@@ -25,16 +24,25 @@ class Notifier(object):
         
     def loadSeenList(self):
         #load from drive
-        pass
+        if os.path.exists("seenList"):
+            with open("seenList", "rb") as file:
+                self.seenList = pickle.load(file)
+        else:
+            pass
     def getLatestData(self):
         parser = Parser.Parser(r'http://www.reddit.com/r/gamedeals')
         self.data  = parser.getList()
            
     def handleClick(self,notification, url):
+        #opens browser and adds thread to seen list
         webbrowser.open(r'http://www.reddit.com'+url)
         notification.close()
         gtk.main_quit()
         self.seenList.append(url)
+        #save list to file
+        with open("seenList", "wb") as file:
+            pickle.dump(self.seenList, file)
+            
         
     def mainLoop(self):
         while True:
@@ -51,7 +59,6 @@ class Notifier(object):
             
             notification.addAction(url, "Go To Thread", self.handleClick)
             notification.show()
-            sleep(3)
             print "Going thru loop"
 
         
