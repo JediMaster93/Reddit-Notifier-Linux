@@ -47,18 +47,21 @@ class Notifier(object):
     def mainLoop(self):
         while True:
             self.getLatestData()
-            threadToDisplay = None
-            for thread in self.data:
-                if thread["permalink"] not in self.seenList:
-                    #reddit gives us threads sorted by score
-                    #just display the first one that was not seen
-                    threadToDisplay = thread
-                    break
+            #dem fancy python list comprehensions.
+            #ITS LIKE IM WRITING A NOVEL.
+            #anyway it finds a thread that is not in seenlist.
+            threadToDisplay = [thread for thread in self.data if thread["permalink"] not in self.seenList]
+            
+            #get the first thread not in seenlist
+            threadToDisplay = threadToDisplay[0]
+            #create a notification from thread.
             notification = Notification(threadToDisplay["title"])
             url = threadToDisplay["permalink"]
             
             notification.addAction(url, "Go To Thread", self.handleClick)
             notification.show()
+            sleep(3)
+
             print "Going thru loop"
 
         

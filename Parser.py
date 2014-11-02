@@ -34,11 +34,12 @@ class Parser(object):
         self.json =  data.read()
         self.json = json.loads(self.json)
     def getList(self):
-        #parses json into clean list of subreddit data.
+        #parses json into clean list of thread data.
+        # end list contains threads with things like url, permalink, title, ect.
         lst = []
-        subreddits = self.json["data"]["children"]
-        for subreddit in subreddits:
-            lst.append(subreddit["data"])
+        threads = self.json["data"]["children"]
+        
+        lst = [thread["data"] for thread in threads]
         return lst
         
         
