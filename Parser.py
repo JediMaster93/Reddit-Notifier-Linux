@@ -37,8 +37,8 @@ class Parser(object):
         #parses json into clean list of subreddit data.
         lst = []
         subreddits = self.json["data"]["children"]
-        for i in range(25):
-            lst.append(subreddits[i]["data"])
+        for subreddit in subreddits:
+            lst.append(subreddit["data"])
         return lst
         
         
