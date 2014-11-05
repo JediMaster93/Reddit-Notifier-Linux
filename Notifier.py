@@ -18,9 +18,23 @@ class Notifier(object):
     classdocs
     '''
     seenList = []
+    subredditURL = r'http://www.reddit.com/r/gamedeals'
+    
     
     def __init__(self):
         self.loadSeenList()
+        self.loadConfig()
+        self.initConfigData()
+        
+        
+    def loadConfig(self):
+        with open("RedditNotifier.config") as file:
+            self.config = eval(file.read())
+            
+    def initConfigData(self):
+        self.subredditURL =  self.config["SubredditURL"]
+        self.Interval = self.config["Interval"]
+        print self.config
         
     def loadSeenList(self):
         #load from drive
@@ -30,7 +44,7 @@ class Notifier(object):
         else:
             pass
     def getLatestData(self):
-        parser = Parser.Parser(r'http://www.reddit.com/r/gamedeals')
+        parser = Parser.Parser(self.subredditURL)
         self.data  = parser.getList()
            
     def handleClick(self,notification, url):
@@ -60,7 +74,7 @@ class Notifier(object):
             
             notification.addAction(url, "Go To Thread", self.handleClick)
             notification.show()
-            sleep(3)
+            sleep(self.Interval)
 
             print "Going thru loop"
 
